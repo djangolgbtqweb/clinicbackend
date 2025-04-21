@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from patients.models import Patient, Appointment
-from staff.models import Staff  # If you have a staff model
+from staff.models import StaffMember  # If you have a staff model
 
 # Only allow logged-in users who are staff
 @user_passes_test(lambda u: u.is_staff)
@@ -9,7 +9,7 @@ from staff.models import Staff  # If you have a staff model
 def dashboard_home(request):
     total_patients = Patient.objects.count()
     total_appointments = Appointment.objects.count()
-    staff_on_duty = Staff.objects.filter(status='On Duty').count() if hasattr(Staff, 'status') else None
+    staff_on_duty = StaffMember.objects.filter(status='On Duty').count() if hasattr(StaffMember, 'status') else None
 
     context = {
         'total_patients': total_patients,
