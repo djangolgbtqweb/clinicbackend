@@ -12,4 +12,5 @@ router.register(r'meal-plans', MealPlanViewSet)
 router.register(r'supplements', SupplementPrescriptionViewSet)
 router.register(r'progress', ProgressMonitorViewSet)
 
+
 urlpatterns = router.urls
