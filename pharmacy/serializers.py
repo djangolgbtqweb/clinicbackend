@@ -12,9 +12,20 @@ class MedicationSerializer(serializers.ModelSerializer):
         return obj.quantity * obj.price_per_unit
 
 class PrescriptionSerializer(serializers.ModelSerializer):
+    medication_name = serializers.CharField(source='medication.name', read_only=True)
+    patient_name = serializers.CharField(source='patient.get_full_name', read_only=True)
     class Meta:
         model = Prescription
-        fields = '__all__'
+        fields = [
+            'id',
+            'patient',       # still the ID if you need it
+            'patient_name',  # human‐readable
+            'medication',    # the FK ID
+            'medication_name',
+            'dose',
+            'prescribed_date'
+        ]
+        
 
 class DispensingHistorySerializer(serializers.ModelSerializer):
     class Meta:
