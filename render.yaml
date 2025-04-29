@@ -2,10 +2,14 @@ services:
   - type: web
     name: clinic-backend
     runtime: python
-    buildCommand: ""
-    startCommand: gunicorn backend.wsgi:application
-    envVars:
-      - key: DJANGO_SETTINGS_MODULE
-        value: backend.settings
-      - key: PYTHON_VERSION
-        value: 3.11
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn backend.wsgi:application"
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    repo: https://github.com/djangolgbtqweb/clinicbackend
+    disk:
+      name: clinic-sqlite-disk
+      mountPath: /persistent
+      sizeGB: 1
