@@ -1,14 +1,18 @@
 from django.db import models
 from staff.models import StaffMember
 
+# internal_communication/models.py
+
 class Notice(models.Model):
     title = models.CharField(max_length=255)
+    reference = models.CharField(max_length=50, unique=True, blank=True)  # <-- Add this
     content = models.TextField()
     posted_by = models.ForeignKey(StaffMember, on_delete=models.SET_NULL, null=True)
     posted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
+
 
 class ShiftUpdate(models.Model):
     message = models.TextField()
