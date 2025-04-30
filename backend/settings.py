@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-4eh_3dbson#u_u0d!@ylucj8v)c5f)+4pp0e-y#9h@vz8928mb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["clinicbackend-nbeu.onrender.com"]
 
 
 # Application definition
@@ -156,7 +156,12 @@ REST_FRAMEWORK = {
 
 LOGIN_URL = '/login/'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOWED_ORIGINS = [
+    "https://clinicdb.netlify.app",  # ✅ your frontend domain
+]
+
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
