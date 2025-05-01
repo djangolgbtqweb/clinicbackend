@@ -49,7 +49,8 @@ urlpatterns = [
     path('api/billing-payments/', include('billing_payments.urls')),
     path('api/patient-portal/', include('patient_portal.urls')),
     path('admin-dashboard/', include('admin_dashboard.urls')), 
-      
+    # Admin dashboard (your template view)
+    path('admin-dashboard/', include('admin_dashboard.urls')),
 
 
 
