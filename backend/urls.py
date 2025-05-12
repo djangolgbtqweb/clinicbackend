@@ -36,7 +36,7 @@ urlpatterns = [
     path('api/pharmacy/', include('pharmacy.urls')),
     path('api/counseling/', include(counseling_router.urls)),
     path('api/laboratory/', include('laboratory.urls')),
-    path('api/patients/', include('patients.urls')),
+    path('api/', include('patients.urls')),
     path('api/outpatient/', include('outpatient.urls')),
     path('api/stis/', include('stis.urls')),
     path('api/staff/', include('staff.urls')),
