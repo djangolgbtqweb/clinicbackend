@@ -2,20 +2,32 @@
 from django.db import models
 from django.utils import timezone
 
+
+
 class Patient(models.Model):
     """Assuming you have a Patient model defined already or you can use the existing Patient model from the `patients` app."""
     full_name = models.CharField(max_length=255)
 
 class AntenatalPostnatalRecord(models.Model):
     """Stores antenatal/postnatal health records."""
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="health_records")
+    patient = models.ForeignKey(
+        'patients.Patient',             # ← point at patients app
+        on_delete=models.CASCADE,
+        related_name="health_records"
+    )
     record_date = models.DateTimeField(default=timezone.now)
-    stage = models.CharField(max_length=50, choices=[('Antenatal', 'Antenatal'), ('Postnatal', 'Postnatal')])
+    stage = models.CharField(
+        max_length=50,
+        choices=[('Antenatal', 'Antenatal'), ('Postnatal', 'Postnatal')]
+    )
     consultation_notes = models.TextField()
-    health_status = models.CharField(max_length=100, choices=[('Normal', 'Normal'), ('At Risk', 'At Risk')])
-    
+    health_status = models.CharField(
+        max_length=100,
+        choices=[('Normal', 'Normal'), ('At Risk', 'At Risk')]
+    )
+
     def __str__(self):
-        return f"{self.patient.full_name} - {self.stage} Record"
+        return f"{self.patient.full_name()} - {self.stage} Record"
 class VaccinationRecord(models.Model):
     """Tracks vaccinations for maternal and child health."""
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="vaccinations")
