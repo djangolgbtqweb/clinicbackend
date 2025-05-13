@@ -5,7 +5,7 @@ from .views import QueueEntryViewSet, ConsultationRecordViewSet, ReferralViewSet
 
 router = DefaultRouter()
 router.register(r'queue', QueueEntryViewSet)
-router.register(r'consultations', ConsultationRecordViewSet)
+router.register(r'consultations', ConsultationRecordViewSet, basename='consultationrecord')
 router.register(r'referrals', ReferralViewSet)
 
 urlpatterns = [
