@@ -30,29 +30,52 @@ class AntenatalPostnatalRecord(models.Model):
         return f"{self.patient.full_name()} - {self.stage} Record"
 class VaccinationRecord(models.Model):
     """Tracks vaccinations for maternal and child health."""
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="vaccinations")
+    patient = models.ForeignKey(
+        'patients.Patient',      # point at the patients app’s Patient model
+        on_delete=models.CASCADE,
+        related_name="vaccinations"
+    )
     vaccine_name = models.CharField(max_length=255)
     vaccine_date = models.DateField()
-    status = models.CharField(max_length=20, choices=[('Completed', 'Completed'), ('Pending', 'Pending')])
-    
+    status = models.CharField(
+        max_length=20,
+        choices=[('Completed', 'Completed'), ('Pending', 'Pending')]
+    )
+
     def __str__(self):
-        return f"{self.patient.full_name} - {self.vaccine_name} - {self.vaccine_date}"
+        return f"{self.patient.full_name()} - {self.vaccine_name} on {self.vaccine_date}"
+
 class GrowthMonitoring(models.Model):
     """Tracks child growth milestones (height, weight, head circumference, etc.)."""
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="growth_monitoring")
+    patient = models.ForeignKey(
+        'patients.Patient',          # ← point at the patients app’s Patient model
+        on_delete=models.CASCADE,
+        related_name="growth_monitoring"
+    )
     record_date = models.DateField(default=timezone.now)
     height = models.FloatField(help_text="Height in cm")
     weight = models.FloatField(help_text="Weight in kg")
     head_circumference = models.FloatField(help_text="Head circumference in cm")
-    
+
     def __str__(self):
-        return f"{self.patient.full_name} - {self.record_date}"
+        return f"{self.patient.full_name()} - {self.record_date}"
 class FamilyPlanning(models.Model):
     """Tracks family planning services provided to patients."""
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="family_planning")
-    service_type = models.CharField(max_length=100, choices=[('Contraceptive', 'Contraceptive'), ('Consultation', 'Consultation')])
+    # Point the FK at the patients app’s Patient model
+    patient = models.ForeignKey(
+        'patients.Patient',
+        on_delete=models.CASCADE,
+        related_name="family_planning"
+    )
+    service_type = models.CharField(
+        max_length=100,
+        choices=[
+            ('Contraceptive', 'Contraceptive'),
+            ('Consultation', 'Consultation')
+        ]
+    )
     service_date = models.DateTimeField(default=timezone.now)
     details = models.TextField()
-    
+
     def __str__(self):
-        return f"{self.patient.full_name} - {self.service_type} - {self.service_date}"
+        return f"{self.patient.full_name()} - {self.service_type} - {self.service_date}"
