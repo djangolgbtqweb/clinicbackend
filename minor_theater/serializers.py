@@ -13,12 +13,25 @@ class SurgeryScheduleSerializer(serializers.ModelSerializer):
 
 # --- Operation Record Serializer ---
 class OperationRecordSerializer(serializers.ModelSerializer):
-    # Assuming there's a related patient field, replace it with actual field if needed
-    patient_name = serializers.CharField(source='patient.full_name', read_only=True)
+    patient_name = serializers.CharField(source='surgery.patient.full_name', read_only=True)
+    procedure = serializers.CharField(source='surgery.procedure', read_only=True)
+    surgeon = serializers.CharField(source='surgery.surgeon', read_only=True)
+    assistant = serializers.CharField(source='surgery.assistant', read_only=True)  # Optional, only if model has it
 
     class Meta:
         model = OperationRecord
-        fields = ['id', 'patient', 'surgeon', 'procedure', 'date', 'notes', 'status', 'patient_name']
+        fields = [
+            'id',
+            'surgery',
+            'notes',
+            'outcome',
+            'performed_by',
+            'operation_date',
+            'patient_name',
+            'procedure',
+            'surgeon',
+            'assistant',  # Optional
+        ]
 
 
 # --- Equipment Tracking Serializer ---
@@ -28,12 +41,26 @@ class EquipmentTrackingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# --- Post-Op Follow-Up Serializer ---
 class PostOpFollowUpSerializer(serializers.ModelSerializer):
-    # Correcting extra field definition
     patient_name = serializers.CharField(source='surgery.patient.full_name', read_only=True)
-    procedure = serializers.CharField(source='surgery.procedure', read_only=True)
+    procedure    = serializers.CharField(source='surgery.procedure',    read_only=True)
+    surgeon_name = serializers.CharField(source='surgery.surgeon', read_only=True)
+    status       = serializers.SerializerMethodField()
 
     class Meta:
-        model = PostOpFollowUp
-        fields = '__all__'  # We don't need to manually append extra fields here
+        model  = PostOpFollowUp
+        fields = [
+            'id',
+            'surgery',
+            'patient_name',
+            'procedure',
+            'surgeon_name',
+            'follow_up_date',
+            'notes',
+            'attended',
+            'status',
+        ]
+
+    def get_status(self, obj):
+        # derive human‐friendly status
+        return 'Completed' if obj.attended else 'Scheduled'
