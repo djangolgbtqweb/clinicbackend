@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .models import LabTest, SampleTracking, LabResult
+from .models import LabTest, SampleTracking, LabResult, Patient
 from .serializers import LabTestSerializer, SampleTrackingSerializer, LabResultSerializer
 
 class LabTestViewSet(viewsets.ModelViewSet):

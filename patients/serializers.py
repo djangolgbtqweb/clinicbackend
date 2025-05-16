@@ -3,9 +3,14 @@ from .models import Patient, Appointment
 from .models import TestResult
 
 class PatientSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+
     class Meta:
-        model  = Patient
-        fields = '__all__'
+        model = Patient
+        fields = ['id', 'full_name']
+
+    def get_full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
 
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:

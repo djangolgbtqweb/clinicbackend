@@ -3,7 +3,7 @@ from .models import Patient, Appointment
 from .serializers import PatientSerializer, AppointmentSerializer
 
 class PatientViewSet(viewsets.ModelViewSet):
-    queryset         = Patient.objects.all()
+    queryset = Patient.objects.all().order_by('last_name', 'first_name')
     serializer_class = PatientSerializer
 
 class AppointmentViewSet(viewsets.ModelViewSet):

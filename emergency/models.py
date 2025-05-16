@@ -1,21 +1,40 @@
 from django.db import models
 
+# emergency/models.py
+
+from django.db import models
+from patients.models import Patient  # Adjust import if needed
+
 class EmergencyCase(models.Model):
-    patient_name = models.CharField(max_length=255)
-    description  = models.TextField()
-    severity     = models.CharField(
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='emergency_cases')
+    
+    description = models.TextField()
+    
+    severity = models.CharField(
         max_length=50,
-        choices=[('Critical','Critical'),('Moderate','Moderate'),('Mild','Mild')],
+        choices=[
+            ('Critical', 'Critical'),
+            ('Moderate', 'Moderate'),
+            ('Mild', 'Mild'),
+        ]
     )
-    condition    = models.CharField(
+    
+    condition = models.CharField(
         max_length=50,
-        choices=[('Critical','Critical'),('Stable','Stable'),('Improving','Improving'),('Worsening','Worsening')],
+        choices=[
+            ('Critical', 'Critical'),
+            ('Stable', 'Stable'),
+            ('Improving', 'Improving'),
+            ('Worsening', 'Worsening'),
+        ],
         default='Critical'
     )
+    
     arrival_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.patient_name} — {self.severity}"
+        return f"{self.patient.full_name()} — {self.severity}"
+
 
 class TriageLog(models.Model):
     emergency_case = models.ForeignKey(EmergencyCase, on_delete=models.CASCADE)
