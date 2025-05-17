@@ -1,15 +1,15 @@
-from django.db import models
-
-# emergency/models.py
+# src/emergency/models.py
 
 from django.db import models
-from patients.models import Patient  # Adjust import if needed
+from patients.models import Patient  # adjust path if needed
 
 class EmergencyCase(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='emergency_cases')
-    
+    patient = models.ForeignKey(
+        Patient,
+        on_delete=models.CASCADE,      # ← cascade delete
+        related_name='emergency_cases'
+    )
     description = models.TextField()
-    
     severity = models.CharField(
         max_length=50,
         choices=[
@@ -18,7 +18,6 @@ class EmergencyCase(models.Model):
             ('Mild', 'Mild'),
         ]
     )
-    
     condition = models.CharField(
         max_length=50,
         choices=[
@@ -29,7 +28,6 @@ class EmergencyCase(models.Model):
         ],
         default='Critical'
     )
-    
     arrival_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -37,22 +35,32 @@ class EmergencyCase(models.Model):
 
 
 class TriageLog(models.Model):
-    emergency_case = models.ForeignKey(EmergencyCase, on_delete=models.CASCADE)
-    triage_notes   = models.TextField()
-    triaged_by     = models.CharField(max_length=255)
-    triage_time    = models.DateTimeField(auto_now_add=True)
+    emergency_case = models.ForeignKey(
+        EmergencyCase,
+        on_delete=models.CASCADE,      # ← cascade delete
+        related_name='triage_logs'
+    )
+    triage_notes = models.TextField()
+    triaged_by   = models.CharField(max_length=255)
+    triage_time  = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Triage by {self.triaged_by} for {self.emergency_case.patient_name}"
+        return f"Triage by {self.triaged_by} for {self.emergency_case.patient.full_name()}"
+
 
 class Referral(models.Model):
-    emergency_case = models.ForeignKey(EmergencyCase, on_delete=models.CASCADE)
-    facility_name  = models.CharField(max_length=255)
-    reason         = models.TextField()
-    referred_on    = models.DateTimeField(auto_now_add=True)
+    emergency_case = models.ForeignKey(
+        EmergencyCase,
+        on_delete=models.CASCADE,      # ← cascade delete
+        related_name='referrals'
+    )
+    facility_name = models.CharField(max_length=255)
+    reason        = models.TextField()
+    referred_on   = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Referral of {self.emergency_case.patient_name} to {self.facility_name}"
+        return f"Referral of {self.emergency_case.patient.full_name()} to {self.facility_name}"
+
 
 class FirstAidInventory(models.Model):
     item_name    = models.CharField(max_length=255)
