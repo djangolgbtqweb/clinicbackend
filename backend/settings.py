@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'minor_theater',
     'nutrition',
     'pharmacy',
-    'stis',
     'staff',
     'internal_communication',
     'outpatient',

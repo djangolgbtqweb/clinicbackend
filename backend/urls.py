@@ -38,7 +38,6 @@ urlpatterns = [
     path('api/laboratory/', include('laboratory.urls')),
     path('api/', include('patients.urls')),
     path('api/outpatient/', include('outpatient.urls')),
-    path('api/stis/', include('stis.urls')),
     path('api/staff/', include('staff.urls')),
     path('api/internal-communication/', include('internal_communication.urls')),
     path('api/resource-management/', include('resource_management.urls')),
