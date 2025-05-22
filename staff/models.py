@@ -33,8 +33,14 @@ class LeaveRequest(models.Model):
     end_date = models.DateField()
     leave_type = models.CharField(max_length=50)
     reason = models.TextField()
-    status = models.CharField(max_length=50, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Denied', 'Denied')], default='Pending')
+    status = models.CharField(max_length=50, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Denied', 'Denied')], default='Pending'
     
+    )
+    rejection_reason = models.TextField(
+        blank=True,
+        null=True,
+        help_text="If denied, why?"
+    )
     def __str__(self):
         return f"Leave request from {self.staff_member.name} - {self.leave_type} ({self.status})"
 

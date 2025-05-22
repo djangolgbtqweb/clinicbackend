@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'billing_payments',
     'patient_portal',
     'admin_dashboard',
+    'django_extensions',
+    
 ]
 
 MIDDLEWARE = [

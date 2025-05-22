@@ -13,6 +13,7 @@ class DutyRosterViewSet(viewsets.ModelViewSet):
 class LeaveRequestViewSet(viewsets.ModelViewSet):
     queryset = LeaveRequest.objects.all()
     serializer_class = LeaveRequestSerializer
+    
 
 class OnCallScheduleViewSet(viewsets.ModelViewSet):
     queryset = OnCallSchedule.objects.all()

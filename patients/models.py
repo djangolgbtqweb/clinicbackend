@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-
+from staff.models import StaffMember 
 # Custom Manager to handle specific queries
 class PatientManager(models.Manager):
     def active_patients(self):
@@ -113,7 +113,19 @@ class Appointment(models.Model):
         on_delete=models.CASCADE,
         related_name='appointments'
     )
+    doctor = models.ForeignKey(  # Only link doctors from StaffMember
+        StaffMember,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        limit_choices_to={'role': 'Doctor'},  # This ensures only Doctors appear in admin/forms
+        related_name='doctor_appointments'
+    )
 
+    purpose_of_visit = models.CharField(  # <-- NEW FIELD
+        max_length=255,
+        help_text="Brief reason or description for the appointment."
+    )
     # Appointment Details
     appointment_date = models.DateTimeField()
     appointment_status = models.CharField(
@@ -157,3 +169,20 @@ class TestResult(models.Model):
 
     def __str__(self):
         return f"{self.test_name} for {self.patient.full_name()} on {self.date_conducted}"
+class MedicalRecord(models.Model):
+    patient = models.ForeignKey(
+        Patient,
+        on_delete=models.CASCADE,
+        related_name='medical_records'
+    )
+    record_type    = models.CharField(max_length=100)
+    record_details = models.TextField()
+    date_created   = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return (
+            f"Medical Record for "
+            f"{self.patient.first_name} "
+            f"{self.patient.last_name} "
+            f"- {self.record_type}"
+        )

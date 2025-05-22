@@ -19,17 +19,36 @@ class RoomAssignment(models.Model):
     staff_name = models.CharField(max_length=255)
     patient_name = models.CharField(max_length=255, blank=True, null=True)
     date = models.DateField()
-    time_slot = models.CharField(max_length=100)  # e.g. "10:00 - 11:00"
+    time_slot = models.CharField(max_length=100)  # "10:00 - 11:00"
+
+    class Meta:
+        unique_together = ('room', 'date', 'time_slot')
+        ordering = ['date', 'time_slot']
 
     def __str__(self):
-        return f"{self.room} assigned to {self.staff_name} at {self.time_slot} on {self.date}"
-
+        return f"{self.room} → {self.staff_name} @ {self.time_slot} on {self.date}"
 class Equipment(models.Model):
+    USED_IN_CHOICES = [
+        ('minor', 'Minor Theater'),
+        ('resource', 'Resource Management'),
+    ]
+    CONDITION_CHOICES = [
+        ('Good', 'Good'),
+        ('Needs Repair', 'Needs Repair'),
+        ('Broken', 'Broken'),
+    ]
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-
+    used_in = models.CharField(max_length=50, choices=USED_IN_CHOICES, default='resource')
+    quantity = models.PositiveIntegerField(default=1) 
+    
+    condition = models.CharField(max_length=50, choices=CONDITION_CHOICES, default='Good')
+    last_checked = models.DateField(null=True, blank=True)
+    
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.get_used_in_display()})"
+
 
 class EquipmentBooking(models.Model):
     equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
