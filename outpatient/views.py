@@ -10,6 +10,7 @@ class QueueEntryViewSet(viewsets.ModelViewSet):
     serializer_class = QueueEntrySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['patient__first_name', 'patient__last_name']
+    http_method_names = ['get', 'post', 'delete', 'patch']
 
 class ConsultationRecordViewSet(viewsets.ModelViewSet):
     queryset = ConsultationRecord.objects.all()
