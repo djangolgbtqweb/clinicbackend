@@ -11,14 +11,17 @@ class EmergencyCaseSerializer(serializers.ModelSerializer):
 
 # TriageLog with nested EmergencyCase
 class TriageLogSerializer(serializers.ModelSerializer):
-    # Keep the nested read-only if you like:
-    emergency_case_detail = serializers.SerializerMethodField(read_only=True)
-
-    # Add this writeable PK field:
+    # Writeable FK for POST/PUT:
     emergency_case = serializers.PrimaryKeyRelatedField(
         queryset=EmergencyCase.objects.all(),
         write_only=True
     )
+    
+    # Read-only integer ID for frontend display:
+    emergency_case_id = serializers.IntegerField(source='emergency_case.id', read_only=True)
+    
+    # Nested detailed info for display (optional):
+    emergency_case_detail = serializers.SerializerMethodField(read_only=True)
 
     def get_emergency_case_detail(self, obj):
         return {
@@ -30,8 +33,9 @@ class TriageLogSerializer(serializers.ModelSerializer):
         model = TriageLog
         fields = [
             'id',
-            'emergency_case',            # writeable FK
-            'emergency_case_detail',     # nested read-only
+            'emergency_case',         # write-only for input
+            'emergency_case_id',      # read-only for output
+            'emergency_case_detail',  # read-only nested info
             'triage_notes',
             'triaged_by',
             'triage_time',

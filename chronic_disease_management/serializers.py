@@ -15,23 +15,34 @@ class PatientNameSerializer(serializers.ModelSerializer):
 
 
 class DiseaseSerializer(serializers.ModelSerializer):
-    # allow writing the FK by ID
-    patient = PatientNameSerializer(read_only=True)
-    # still expose the full name read‑only
-    patient_name = serializers.CharField(source='patient.full_name', read_only=True)
+    # Write‐only field, named patient_id in JSON, sets disease.patient
+    patient_id = serializers.PrimaryKeyRelatedField(
+        source='patient',
+        queryset=Patient.objects.all(),
+        write_only=True,
+    )
+    # Read‐only nested representation
+    patient = serializers.SerializerMethodField(read_only=True)
+
+    def get_patient(self, obj):
+        return {
+            'id': obj.patient.id,
+            'first_name': obj.patient.first_name,
+            'last_name': obj.patient.last_name,
+        }
 
     class Meta:
-        model  = Disease
+        model = Disease
         fields = [
             'id',
-            'patient',       # writeable FK
-            'patient_name',  # read‑only display
+            'patient',       # read‐only nested
+            'patient_id',    # write‐only input
             'disease_type',
             'diagnosis_date',
             'treatment_plan',
             'status',
         ]
-
+        read_only_fields = ['id', 'patient']
 
 class FollowUpSerializer(serializers.ModelSerializer):
     # nest the Disease for reads
