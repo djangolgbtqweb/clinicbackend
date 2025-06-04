@@ -5,8 +5,19 @@ class StaffMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = StaffMember
         # include everything the front-end needs:
-        fields = ['id', 'name', 'role', 'contact_info', 'profile_picture', 'date_joined']
-
+        fields = [
+            'id',
+            'name',
+            'role',
+            'contact_info',
+            'profile_picture',
+            'date_joined',
+            'pin',               # ← newly added
+        ]
+        extra_kwargs = {
+            # make it write‐optional so you can POST without explicitly providing pin
+            'pin': {'required': False, 'allow_null': True},
+        }
 
 class DutyRosterSerializer(serializers.ModelSerializer):
     class Meta:
