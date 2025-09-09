@@ -12,9 +12,21 @@ class HealthEducationLogSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PrivateNoteSerializer(serializers.ModelSerializer):
+    # no need to declare counselor_pin explicitly—
+    # ModelSerializer will pick it up automatically
     class Meta:
         model = PrivateNote
-        fields = '__all__'
+        fields = [
+            'id',
+            'session',
+            'counselor',
+            'counselor_pin',   # now writable & readable
+            'note',
+            'created_at',
+        ]
+        extra_kwargs = {
+            'counselor_pin': {'required': True},
+        }
 
 class FollowUpReminderSerializer(serializers.ModelSerializer):
     class Meta:

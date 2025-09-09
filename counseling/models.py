@@ -22,13 +22,24 @@ class HealthEducationLog(models.Model):
         return f"Education log for {self.session.patient.full_name}"
 
 class PrivateNote(models.Model):
-    session = models.ForeignKey(CounselingSession, on_delete=models.CASCADE, related_name='private_notes')
+    session = models.ForeignKey(
+        CounselingSession,
+        on_delete=models.CASCADE,
+        related_name='private_notes'
+    )
     counselor = models.CharField(max_length=255)
+    counselor_pin = models.CharField(
+        max_length=10,
+        help_text="4‑digit PIN the counselor entered",
+        null=True,
+        blank=True,
+    )
     note = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Private note for {self.session.patient.full_name}"
+
 
 class FollowUpReminder(models.Model):
     counseling_session = models.ForeignKey(CounselingSession, on_delete=models.CASCADE, related_name='follow_up_reminders')

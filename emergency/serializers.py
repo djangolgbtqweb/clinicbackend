@@ -1,4 +1,7 @@
 from rest_framework import serializers
+from staff.serializers import StaffMemberSerializer
+from staff.models import StaffMember
+
 from .models import EmergencyCase, TriageLog, Referral, FirstAidInventory
 
 # Basic EmergencyCase Serializer
@@ -48,6 +51,13 @@ class ReferralSerializer(serializers.ModelSerializer):
         write_only=True,
         queryset=EmergencyCase.objects.all()
     )
+    referred_by = StaffMemberSerializer(read_only=True)  # for reading staff details
+    referred_by_id = serializers.PrimaryKeyRelatedField( # for writing staff id
+        source='referred_by',
+        write_only=True,
+        queryset=StaffMember.objects.all(),
+        allow_null=True
+    )
 
     class Meta:
         model = Referral
@@ -55,6 +65,8 @@ class ReferralSerializer(serializers.ModelSerializer):
             'id',
             'emergency_case',    # nested for reads
             'emergency_case_id', # use this for writes
+            'referred_by',
+            'referred_by_id',
             'facility_name',
             'reason',
             'referred_on',

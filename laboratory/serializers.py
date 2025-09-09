@@ -24,6 +24,7 @@ class SampleTrackingSerializer(serializers.ModelSerializer):
     patient_name = serializers.CharField(
         source='lab_test.patient.full_name',
         read_only=True
+    
     )
 
     class Meta:

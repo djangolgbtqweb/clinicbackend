@@ -54,6 +54,13 @@ class Referral(models.Model):
         on_delete=models.CASCADE,      # ← cascade delete
         related_name='referrals'
     )
+    referred_by = models.ForeignKey(  # <-- NEW
+        'staff.StaffMember',          # points to StaffMember in staff app
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='emergency_referrals_made'
+    )
     facility_name = models.CharField(max_length=255)
     reason        = models.TextField()
     referred_on   = models.DateTimeField(auto_now_add=True)

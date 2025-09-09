@@ -5,6 +5,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from patients.views import PatientViewSet, AppointmentViewSet, TestResultViewSet
 from counseling.urls import router as counseling_router
+from resource_management.views import WardViewSet, BedViewSet
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -15,6 +16,8 @@ router = DefaultRouter()
 router.register(r'patients', PatientViewSet)
 router.register(r'appointments', AppointmentViewSet)
 router.register(r'test-results', TestResultViewSet)
+router.register(r'wards', WardViewSet)
+router.register(r'beds', BedViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,6 +39,7 @@ urlpatterns = [
     path('api/triage-vitals/', include('triage_vitals.urls')),
     path('api/billing-payments/', include('billing_payments.urls')),
     path('api/patient-portal/', include('patient_portal.urls')),
+    path('api/inpatient/', include('inpatient.urls')),
 
     # **Resource Management must go here** so that
     # /api/resource-management/resource-equipment/ is routed correctly:

@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 
 from patients.models import Patient
-
+from staff.models import StaffMember
 class QueueEntry(models.Model):
     """Tracks patients waiting for outpatient services."""
     patient = models.ForeignKey(
@@ -66,6 +66,13 @@ class Referral(models.Model):
         ConsultationRecord,
         on_delete=models.CASCADE,
         related_name='referrals'
+    )
+    referred_by = models.ForeignKey(
+        StaffMember,
+        on_delete=models.PROTECT,
+        related_name='referrals_made',
+        null=True,
+        blank=True,
     )
     referred_to = models.CharField(
         max_length=200,
@@ -161,6 +168,8 @@ class ConsultationRecordViewSet(viewsets.ModelViewSet):
 class ReferralViewSet(viewsets.ModelViewSet):
     queryset = Referral.objects.all()
     serializer_class = ReferralSerializer
+    
+
 
 
 # backend/outpatient/urls.py

@@ -1,4 +1,6 @@
 from dotenv import load_dotenv
+from datetime import timedelta
+
 load_dotenv()
 
 """
@@ -58,6 +60,7 @@ INSTALLED_APPS = [
     'billing_payments',
     'patient_portal',
     'admin_dashboard',
+    'inpatient',
     # 'django_extensions',
 ]
 
@@ -164,5 +167,12 @@ CORS_ALLOWED_ORIGINS = [
     'https://clinicdb.netlify.app',
     'http://127.0.0.1:3000',
     'http://localhost:3000',
+    
 ]
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # token lasts 1 hour
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     # refresh lasts 7 days
+    'ROTATE_REFRESH_TOKENS': False,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}

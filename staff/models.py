@@ -19,6 +19,7 @@ class StaffMember(models.Model):
         help_text="4-digit numeric PIN for staff login (can be blank initially)"
     )
     ROLE_CHOICES = [
+        ('Admin', 'Admin'),
         # Doctors
         ('Doctor - Cardiology', 'Doctor - Cardiology'),
         ('Doctor - Pediatrics', 'Doctor - Pediatrics'),
@@ -88,7 +89,7 @@ class StaffMember(models.Model):
 class DutyRoster(models.Model):
     staff_member = models.ForeignKey(StaffMember, on_delete=models.CASCADE)
     date = models.DateField()
-    shift_time = models.CharField(max_length=50, choices=[('Morning', 'Morning'), ('Evening', 'Evening'), ('Night', 'Night')])
+    shift_time = models.CharField(max_length=50, choices=[('Morning', 'Morning'), ('Afternoon', 'Afternoon'), ('Weekend', 'Weekend'), ('Holidays', 'Holidays'), ('Evening', 'Evening'), ('Night', 'Night')])
     assigned = models.BooleanField(default=False)
     
     def __str__(self):
