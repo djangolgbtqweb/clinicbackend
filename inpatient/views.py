@@ -11,8 +11,25 @@ from outpatient.models import ConsultationRecord
 from resource_management.models import Bed, Ward
 from patients.models import Patient
 
+from resource_management.serializers import WardSerializer, BedSerializer
+
 # You can change permission_classes to IsAuthenticated for production
 from rest_framework.permissions import AllowAny
+
+class WardViewSet(viewsets.ModelViewSet):
+    queryset = Ward.objects.all()
+    serializer_class = WardSerializer
+    permission_classes = [AllowAny]
+
+    def get_serializer_class(self):
+        if self.request.query_params.get("compact") == "1":
+            from inpatient.serializers import WardCompactSerializer
+            return WardCompactSerializer
+        return super().get_serializer_class()
+class BedViewSet(viewsets.ModelViewSet):
+    queryset = Bed.objects.all()
+    serializer_class = BedSerializer
+    permission_classes = [AllowAny]
 
 
 class AdmissionViewSet(viewsets.ModelViewSet):

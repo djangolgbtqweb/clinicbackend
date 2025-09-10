@@ -143,6 +143,11 @@ class WardViewSet(viewsets.ModelViewSet):
         'available_count': available_count,
         'patient_id': patient.id
     }, status=status.HTTP_200_OK)
+    def destroy(self, request, *args, **kwargs):
+        return Response(
+            {"error": "Deleting wards is not allowed"},
+            status=status.HTTP_405_METHOD_NOT_ALLOWED
+        )
 
 
 class BedViewSet(viewsets.ModelViewSet):

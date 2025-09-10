@@ -40,6 +40,8 @@ urlpatterns = [
     path('api/billing-payments/', include('billing_payments.urls')),
     path('api/patient-portal/', include('patient_portal.urls')),
     path('api/inpatient/', include('inpatient.urls')),
+   
+
 
     # **Resource Management must go here** so that
     # /api/resource-management/resource-equipment/ is routed correctly:

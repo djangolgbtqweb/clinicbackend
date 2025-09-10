@@ -8,6 +8,8 @@ from .views import (
     EquipmentViewSet,
     EquipmentBookingViewSet,
     ResourceEquipmentViewSet,
+    WardViewSet,
+    BedViewSet, 
 )
 
 # Main router for the “minor theater” style endpoints
@@ -16,6 +18,7 @@ main_router.register(r'rooms', RoomViewSet)
 main_router.register(r'room-assignments', RoomAssignmentViewSet)
 main_router.register(r'equipment', EquipmentViewSet)
 main_router.register(r'equipment-bookings', EquipmentBookingViewSet)
+     
 
 # Separate router for resource-management’s equipment
 resource_router = DefaultRouter()
