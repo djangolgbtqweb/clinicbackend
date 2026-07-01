@@ -9,6 +9,11 @@ services:
     plan: free
     branch: main
     repo: https://github.com/djangolgbtqweb/clinicbackend
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+
     disk:
       name: clinic-sqlite-disk
       mountPath: /persistent

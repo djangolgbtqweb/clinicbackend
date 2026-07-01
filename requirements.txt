@@ -13,5 +13,5 @@ dj-database-url==0.5.0
 
 python-dotenv==1.0.1
 psycopg2-binary==2.9.10
-djangorestframework-simplejwt==5.2.2
-setuptools>=70
+djangorestframework-simplejwt==5.5.1
+setuptools==80.9.0
